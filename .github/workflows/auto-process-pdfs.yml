@@ -97,10 +97,15 @@ jobs:
       if: steps.json_changes.outputs.json_changes == 'true'
       run: |
         echo "🏗️ 빌드 시작..."
+        echo "🔧 PDF 처리 설정:"
+        echo "   청크 크기: ${{ github.event.inputs.chunkSize || 2000 }}"
+        echo "   오버랩 크기: ${{ github.event.inputs.overlapSize || 200 }}"
         npm run build
         echo "✅ 빌드 완료!"
       env:
         VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
+        CHUNK_SIZE: ${{ github.event.inputs.chunkSize || 2000 }}
+        OVERLAP_SIZE: ${{ github.event.inputs.overlapSize || 200 }}
         
     - name: Setup Pages
       if: steps.json_changes.outputs.json_changes == 'true'

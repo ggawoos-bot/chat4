@@ -18,9 +18,21 @@ function runScript(scriptPath, scriptName) {
     console.log(`\n🚀 ${scriptName} 실행 중...`);
     console.log(`📁 스크립트: ${scriptPath}`);
     
+    // 환경변수 전달 (청크 크기와 오버랩 크기)
+    const env = {
+      ...process.env,
+      CHUNK_SIZE: process.env.CHUNK_SIZE || '2000',
+      OVERLAP_SIZE: process.env.OVERLAP_SIZE || '200'
+    };
+    
+    console.log(`🔧 환경변수 설정:`);
+    console.log(`   CHUNK_SIZE: ${env.CHUNK_SIZE}`);
+    console.log(`   OVERLAP_SIZE: ${env.OVERLAP_SIZE}`);
+    
     const child = spawn('node', [scriptPath], {
       stdio: 'inherit',
-      cwd: __dirname
+      cwd: __dirname,
+      env: env
     });
     
     child.on('close', (code) => {
